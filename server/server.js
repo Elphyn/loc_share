@@ -1,4 +1,5 @@
 const express = require('express')
+const bonjour = require('bonjour')()
 const {createServer} = require('node:http')
 const { Server } = require('socket.io')
 
@@ -22,6 +23,8 @@ io.on('connection', (socket) => {
     
 })
 
-server.listen(3000, () => {
+server.listen(3000, '0.0.0.0', () => {
     console.log(`Server is listening on http://localhost:${port}`)
 })
+
+bonjour.publish({ name: 'signal-server', type: 'http', port:3000 })

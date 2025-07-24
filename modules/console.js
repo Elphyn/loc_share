@@ -1,4 +1,4 @@
-function startConsole() {
+function startConsole(peer) {
     const readline = require('readline')
     const rl = readline.createInterface({
         input: process.stdin,
@@ -9,12 +9,16 @@ function startConsole() {
     rl.prompt()
     
     rl.on('line', (line) => {
-        const trimmed = line.trim()
+        const input = line.trim()
         
-        if (trimmed === 'exit') {
+        if (input === 'exit') {
             rl.close()
             return
-        }
+        } else if (input) { 
+            peer.send(input)
+        } 
+        rl.setPrompt('> ')
+        rl.prompt()
     })
     rl.on('close', () => {
         console.log('Exiting')

@@ -1,6 +1,8 @@
 const Peer = require('simple-peer')
 const wrtc = require('wrtc')
 const startConsole = require('./console')
+
+
 function setupPeer(isInitiator, socket) {
     peer = new Peer({
         initiator: isInitiator,
@@ -19,7 +21,7 @@ function setupPeer(isInitiator, socket) {
     
     peer.on('connect', () => {
         console.log("Peer connected!") 
-        startConsole()
+        startConsole(peer)
     })
     
     peer.on('data', (data) => {

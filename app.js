@@ -2,42 +2,10 @@ const bonjour = require('bonjour')()
 const {createServer} = require('node:http')
 const { Server } = require('socket.io')
 const { io } = require('socket.io-client')
-const Peer = require('simple-peer')
-const wrtc = require('wrtc')
+const setupPeer = require('./modules/peer.js')
+let peer
 
-function setupPeer(isInitiator, socket) {
-    peer = new Peer({
-        initiator: isInitiator,
-        trickle: false,
-        wrtc,
-    })
-    
-    peer.on('signal', data => {
-        socket.emit('signal', data)
-    })
-    
-    socket.on('signal', (data) => {
-        console.log('Recieved signal' + data.type)
-        peer.signal(data)
-    })
-    
-    peer.on('connect', () => {
-        console.log("Peer connected!")
-        
-        peer.send('Hello')
-    })
-    
-    peer.on('data', (data) => {
-        console.log(`Received message: ${data.toString()}`)
-    })
-    
-    peer.on('error', (err) => {
-        console.error('Something went wrong: ', err)
-    })
-    
-    return peer
 
-}
 
 const isHost = process.argv.includes('--host')
 if (isHost) {
@@ -53,7 +21,7 @@ if (isHost) {
             socket.broadcast.emit('signal', data)
         })
 
-        setupPeer(false, socket) 
+        peer = setupPeer(false, socket) 
     })
 
     // don't forget to make dynamic port later
@@ -74,10 +42,12 @@ if (isHost) {
         socket.on('connect', () => {
             console.log("Connected to server") 
             console.log("Initiator")
-            setupPeer(true, socket) 
+            peer = setupPeer(true, socket) 
         })
 
     })
     
 }
+
+
 

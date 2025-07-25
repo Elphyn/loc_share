@@ -2,11 +2,9 @@ const bonjour = require('bonjour')()
 const {createServer} = require('node:http')
 const { Server } = require('socket.io')
 const { io } = require('socket.io-client')
-const setupPeer = require('./modules/peer.js')
+const setupPeer = require('peer.js')
+
 let peer
-
-
-
 const isHost = process.argv.includes('--host')
 if (isHost) {
     const port = 3000

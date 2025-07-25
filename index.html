@@ -8,11 +8,35 @@
 <body>
     <h1>Electron</h1> 
     <button id="host-btn">Start signaling server</button>
+    <button id="update">Update list</button>
+    <ul id="connections"></ul>
         
     <script>
+        const button_update = document.getElementById('update')
         const button_host = document.getElementById('host-btn')
+        const list = document.getElementById('connections')
+
         
+        button_host.addEventListener('click', async () => {
+            try {
+                await window.electronAPI.startServer()
+                console.log("button pressed, server should be starting now")
+            } catch (err) {
+                console.log("Something went wrong: ", err)
+            }
         
+        })
+        button_update.addEventListener('click', async () => {     
+           const arr = await window.electronAPI.getConnections()
+        
+           arr.forEach(element => {
+                const li = document.createElement('li')
+                li.textContent = `Socket ID: ${element.id}`
+                list.append(li) 
+           });
+            
+        })
+
     </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-const bonjour = require('bonjour')
+const bonjour = require('bonjour')()
 const startSignalingServer = require('./signaling_server')
 const port = 3000
 

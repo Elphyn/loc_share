@@ -1,5 +1,5 @@
-const bonjour = require('bonjour')
-
+const bonjour = require('bonjour')()
+const { io } = require('socket.io-client')
 
 
 const broswer = bonjour.find({ type: 'http' })

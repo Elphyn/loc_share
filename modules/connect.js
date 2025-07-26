@@ -1,5 +1,6 @@
 const bonjour = require('bonjour')()
 const { io } = require('socket.io-client')
+const { setSocket } = require('./socketStore')
 
 function socketConnect() { 
     return new Promise((resolve, reject) => {
@@ -14,7 +15,10 @@ function socketConnect() {
             socket.on('connect', () => {
                 console.log("Connected to server") 
                 console.log(`SocketId: ${socket.id}`)
-                resolve(socket.id)
+                setSocket(socket)
+                resolve({
+                    id: socket.id
+                })
             })
             
             socket.on('error', (err) => {

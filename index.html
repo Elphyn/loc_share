@@ -23,7 +23,6 @@
                 await window.electronAPI.startServer()
                 console.log("Server started, now connecting local socket")
                 localId = await window.electronAPI.socketConnect()
-
             } catch (err) {
                 console.log("Something went wrong: ", err)
             }
@@ -48,7 +47,8 @@
 
                 }) 
                 container.append(li)
-                if (remoteId.id !== localId) {
+                console.log('localID: ', localId.id)
+                if (remoteId.id !== localId.id) {
                     container.append(button_connect)
                 } else {
                     const label = document.createElement('p')

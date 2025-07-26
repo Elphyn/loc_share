@@ -35,5 +35,6 @@ ipcMain.handle('get-connections', () => {
 })
 
 ipcMain.handle('socket-connect', async () => {
-    return socketConnect()
+    res = await socketConnect()
+    return res
 })

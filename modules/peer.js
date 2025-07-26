@@ -1,7 +1,9 @@
 const Peer = require('simple-peer')
 const wrtc = require('wrtc')
+const { getSocket } = require('./socketStore')
 
-function setupPeer(isInitiator, socket, localId, remoteId) {
+function setupPeer(isInitiator, localId, remoteId) {
+    const socket = getSocket()
     return new Promise((resolve, reject) => {
         const peer = new Peer({
             initiator: isInitiator,

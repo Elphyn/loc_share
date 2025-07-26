@@ -1,6 +1,7 @@
 const { app, BrowserWindow, contentTracing, ipcMain } = require('electron')
 const path = require('node:path')
 const startServer = require('./modules/startServer')
+const socketConnect = require('./modules/connect')
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -31,4 +32,8 @@ ipcMain.handle('get-connections', () => {
     return sockets.map((socket) => ({
         id: socket.id
     }))
+})
+
+ipcMain.handle('socket-connect', async () => {
+    return socketConnect()
 })

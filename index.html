@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Electron app</title>
 </head>
 <body>
     <h1>Electron</h1> 
@@ -15,12 +15,15 @@
         const button_update = document.getElementById('update')
         const button_host = document.getElementById('host-btn')
         const list = document.getElementById('connections')
-
+        let localId = null
         
         button_host.addEventListener('click', async () => {
             try {
-                await window.electronAPI.startServer()
                 console.log("button pressed, server should be starting now")
+                await window.electronAPI.startServer()
+                console.log("Server started, now connecting local socket")
+                localId = await window.electronAPI.socketConnect()
+
             } catch (err) {
                 console.log("Something went wrong: ", err)
             }
@@ -28,17 +31,24 @@
         })
         button_update.addEventListener('click', async () => {     
            const arr = await window.electronAPI.getConnections()
+           list.innerHTML = ''
         
-           arr.forEach(element => {
+           arr.forEach(remoteId => {
                 const container = document.createElement('div')
                 const li = document.createElement('li')
                 const button_connect = document.createElement('button')
 
-                li.textContent = `Socket ID: ${element.id}`
+                li.textContent = `Socket ID: ${remoteId.id}`
                 button_connect.textContent = 'connect'
                 
+                button_connect.addEventListener('click', async (peer) => {
+                    console.log(`Connecting to peer: ${remoteId.id}`)
+                    // to use setupPeer, I need: localId, remoteId 
+                    
+
+                }) 
                 container.append(li)
-                container.append(button_connect)
+                remoteId.id !== localId ? container.append(button_connect) : null
                 list.append(container) 
            });
             

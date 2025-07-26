@@ -13,6 +13,10 @@ async function startServer() {
     io.on('connection', (socket) => {
         console.log('User has connected')
         connections.add(socket)
+        socket.on('disconnect', () => {
+            console.log('User has disconnected')
+            connections.delete(socket)
+        })
     })
     
     return {

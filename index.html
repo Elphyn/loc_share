@@ -30,9 +30,16 @@
            const arr = await window.electronAPI.getConnections()
         
            arr.forEach(element => {
+                const container = document.createElement('div')
                 const li = document.createElement('li')
+                const button_connect = document.createElement('button')
+
                 li.textContent = `Socket ID: ${element.id}`
-                list.append(li) 
+                button_connect.textContent = 'connect'
+                
+                container.append(li)
+                container.append(button_connect)
+                list.append(container) 
            });
             
         })

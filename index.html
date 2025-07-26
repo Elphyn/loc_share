@@ -9,6 +9,7 @@
     <h1>Electron</h1> 
     <button id="host-btn">Start signaling server</button>
     <button id="update">Update list</button>
+    <button id="waiter">Allow connections</button>
     <ul id="connections"></ul>
         
     <script>
@@ -33,6 +34,7 @@
            list.innerHTML = ''
         
            arr.forEach(remoteId => {
+                const remote = remoteId.id
                 const container = document.createElement('div')
                 const li = document.createElement('li')
                 const button_connect = document.createElement('button')
@@ -40,11 +42,12 @@
                 li.textContent = `Socket ID: ${remoteId.id}`
                 button_connect.textContent = 'connect'
                 
-                button_connect.addEventListener('click', async (peer) => {
-                    console.log(`Connecting to peer: ${remoteId.id}`)
+                button_connect.addEventListener('click', async () => {
+                    console.log(`Connecting to peer: ${remote}`)
                     // to use setupPeer, I need: localId, remoteId 
-                    
-
+                    console.log(`local: ${localId.id}, remote: ${remoteId.id}`)
+                    await console.log('RemoteId: ', remoteId)
+                    window.electronAPI.peerConnect(true, localId.id, remote)
                 }) 
                 container.append(li)
                 console.log('localID: ', localId.id)
@@ -52,7 +55,7 @@
                     container.append(button_connect)
                 } else {
                     const label = document.createElement('p')
-                    label.textContent = ' (local) '
+                    label.textContent = ' (local) '                    
                     container.append(label)
                 }
                 list.append(container) 
@@ -60,6 +63,11 @@
             
         })
 
+        const waiter = document.getElementById('waiter')
+        waiter.addEventListener('click', async () => {
+            localId = await window.electronAPI.socketConnect()
+            await window.electronAPI.peerConnect(false, localId.id)
+        })
     </script>
 </body>
 </html>

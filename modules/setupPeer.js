@@ -2,7 +2,7 @@ const Peer = require('simple-peer')
 const wrtc = require('wrtc')
 const { getSocket } = require('./socketStore')
 
-function setupPeer(isInitiator, localId, remoteId) {
+function setupPeer(isInitiator, localId, remoteId = null) {
     const socket = getSocket()
     return new Promise((resolve, reject) => {
         const peer = new Peer({
@@ -11,7 +11,16 @@ function setupPeer(isInitiator, localId, remoteId) {
             wrtc
         })
         
+        // if (isInitiator && !remoteId) {
+        //     return reject(new Error('Initiator must speicify remoteID'))
+        // }
+        
         peer.on('signal', data => {
+            if (!remoteId) {
+                console.warn("No remoteId yet, can't emit")
+                return
+            }
+
             socket.emit('signal', {
                 to: remoteId,
                 from: localId,
@@ -20,6 +29,9 @@ function setupPeer(isInitiator, localId, remoteId) {
         })
         
         socket.on('signal', ({from, data}) => {
+            if (!remoteId) {
+                remoteId = from
+            }
             if (from === remoteId) {
                 console.log('Received signal', from)
                 peer.signal(data)
@@ -37,37 +49,5 @@ function setupPeer(isInitiator, localId, remoteId) {
     })
 
 }
-
-// function setupPeer(isInitiator, socket) {
-//     peer = new Peer({
-//         initiator: isInitiator,
-//         trickle: false,
-//         wrtc,
-//     })
-    
-//     peer.on('signal', data => {
-//         socket.emit('signal', data)
-//     })
-    
-//     socket.on('signal', (data) => {
-//         console.log('Recieved signal' + data.type)
-//         peer.signal(data)
-//     })
-    
-//     peer.on('connect', () => {
-//         console.log("Peer connected!") 
-//     })
-    
-//     peer.on('data', (data) => {
-//         console.log(`Received message: ${data.toString()}`)
-//     })
-    
-//     peer.on('error', (err) => {
-//         console.error('Something went wrong: ', err)
-//     })
-    
-//     return peer
-
-// }
 
 module.exports = setupPeer

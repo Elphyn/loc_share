@@ -6,3 +6,4 @@ WebRTC(simple-peer)
 Node.js
 mDNS(Node:bonjour)
 WebSockets(socket.io)
+Electron

@@ -48,7 +48,13 @@
 
                 }) 
                 container.append(li)
-                remoteId.id !== localId ? container.append(button_connect) : null
+                if (remoteId.id !== localId) {
+                    container.append(button_connect)
+                } else {
+                    const label = document.createElement('p')
+                    label.textContent = ' (local) '
+                    container.append(label)
+                }
                 list.append(container) 
            });
             

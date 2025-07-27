@@ -10,6 +10,7 @@
     <button id="host-btn">Start signaling server</button>
     <button id="update">Update list</button>
     <ul id="connections"></ul>
+    <button id="listener">Allow connect</button>
         
     <script>
         const button_update = document.getElementById('update')
@@ -41,10 +42,15 @@
                 button_connect.textContent = 'connect'
                 
                 button_connect.addEventListener('click', async (peer) => {
-                    console.log(`Connecting to peer: ${remoteId.id}`)
+                    console.log(`Connecting to peer: ${remoteId.id} from ${localId.id}`)
                     // to use setupPeer, I need: localId, remoteId 
-                    
-
+                    try {
+                        await window.electronAPI.setupPeer(true, localId.id, remoteId.id)
+                        console.log("p2p connected")
+                    } catch (err) {
+                        console.log("Something went wrong: ", err)
+                    }
+                    console.log('Connected')
                 }) 
                 container.append(li)
                 console.log('localID: ', localId.id)
@@ -60,6 +66,18 @@
             
         })
 
+        const button_listener = document.getElementById('listener')
+        
+        button_listener.addEventListener('click', async () => { 
+            try {
+                localId = await window.electronAPI.socketConnect()
+                await window.electronAPI.setupPeer(false, localId.id)
+                console.log('Connected')
+            } catch (err) {
+                console.log('Something went wrong ', err)
+            }
+
+        })
     </script>
 </body>
 </html>

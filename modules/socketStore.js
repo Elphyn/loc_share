@@ -3,7 +3,7 @@
 let socket = null
 
 function setSocket(s) { 
-    setSocket = s
+    socket = s
 }
 
 function getSocket() {

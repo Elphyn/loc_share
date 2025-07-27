@@ -13,6 +13,19 @@ async function startServer() {
     io.on('connection', (socket) => {
         console.log('User has connected')
         connections.add(socket)
+
+        socket.on('signal', ({ to, signal }) => {
+            const target = io.sockets.sockets.get(to)
+            console.log('Server recieved signal, redirecting to: ', target.id)
+
+            if (target) {
+                target.emit('signal', {from: socket.id, signal})
+            } else {
+                console.log(`There's no socket with an id:${to}`)
+            }
+        })
+        
+
         socket.on('disconnect', () => {
             console.log('User has disconnected')
             connections.delete(socket)

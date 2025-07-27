@@ -5,6 +5,7 @@ function startSignalingServer(port) {
     return new Promise((resolve, reject) => {
         httpServer = require('node:http').createServer()
         io = require('socket.io')(httpServer)
+
         
         httpServer.listen(port, '0.0.0.0', () => {
             resolve({httpServer, io})

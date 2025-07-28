@@ -1,8 +1,8 @@
 const { app, BrowserWindow, contentTracing, ipcMain } = require('electron')
 const path = require('node:path')
-const startServer = require('./modules/startServer')
-const socketConnect = require('./modules/connect')
-const setupPeer = require('./modules/peer')
+const startServer = require('./modules_backend/startServer')
+const socketConnect = require('./modules_backend/connect')
+const setupPeer = require('./modules_backend/peer')
 
 const createWindow = () => {
     const win = new BrowserWindow({

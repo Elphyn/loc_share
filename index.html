@@ -10,74 +10,8 @@
     <button id="host-btn">Start signaling server</button>
     <button id="update">Update list</button>
     <ul id="connections"></ul>
-    <button id="listener">Allow connect</button>
+    <button id="listener">Allow connect</button>        
         
-    <script>
-        const button_update = document.getElementById('update')
-        const button_host = document.getElementById('host-btn')
-        const list = document.getElementById('connections')
-        let localId = null
-        
-        button_host.addEventListener('click', async () => {
-            try {
-                console.log("button pressed, server should be starting now")
-                await window.electronAPI.startServer()
-                console.log("Server started, now connecting local socket")
-                localId = await window.electronAPI.socketConnect()
-            } catch (err) {
-                console.log("Something went wrong: ", err)
-            }
-        
-        })
-        button_update.addEventListener('click', async () => {     
-           const arr = await window.electronAPI.getConnections()
-           list.innerHTML = ''
-        
-           arr.forEach(remoteId => {
-                const container = document.createElement('div')
-                const li = document.createElement('li')
-                const button_connect = document.createElement('button')
-
-                li.textContent = `Socket ID: ${remoteId.id}`
-                button_connect.textContent = 'connect'
-                
-                button_connect.addEventListener('click', async (peer) => {
-                    console.log(`Connecting to peer: ${remoteId.id} from ${localId.id}`)
-                    // to use setupPeer, I need: localId, remoteId 
-                    try {
-                        await window.electronAPI.setupPeer(true, localId.id, remoteId.id)
-                        console.log("p2p connected")
-                    } catch (err) {
-                        console.log("Something went wrong: ", err)
-                    }
-                    console.log('Connected')
-                }) 
-                container.append(li)
-                console.log('localID: ', localId.id)
-                if (remoteId.id !== localId.id) {
-                    container.append(button_connect)
-                } else {
-                    const label = document.createElement('p')
-                    label.textContent = ' (local) '
-                    container.append(label)
-                }
-                list.append(container) 
-           });
-            
-        })
-
-        const button_listener = document.getElementById('listener')
-        
-        button_listener.addEventListener('click', async () => { 
-            try {
-                localId = await window.electronAPI.socketConnect()
-                await window.electronAPI.setupPeer(false, localId.id)
-                console.log('Connected')
-            } catch (err) {
-                console.log('Something went wrong ', err)
-            }
-
-        })
-    </script>
+    <script src="./modules_frontend/script.js" type="module"></script>
 </body>
 </html>

@@ -2,7 +2,6 @@ import { choosingSocketToConnect } from "./listing_connections.js"
 const button_update = document.getElementById('update')
 const button_host = document.getElementById('host-btn')
 const list = document.getElementById('connections')
-const event = new Event('p2p-connected')
 
 let localId = null
 
@@ -18,7 +17,9 @@ button_host.addEventListener('click', async () => {
 
 })
 
-button_update.addEventListener('click', () => choosingSocketToConnect(list, localId))
+button_update.addEventListener('click', async () => {
+    await choosingSocketToConnect(list, localId)
+})
 
 const button_listener = document.getElementById('listener')
 

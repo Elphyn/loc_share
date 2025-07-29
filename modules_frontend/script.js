@@ -34,3 +34,11 @@ button_listener.addEventListener('click', async () => {
 
 })
 
+const header = document.getElementById('peer-connection')
+
+window.electronAPI.onP2PConnected((_event, data) => {
+    
+    header.textContent = `Connected to ${data.remoteId}`
+    
+    
+})

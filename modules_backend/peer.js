@@ -23,12 +23,18 @@ function setupPeer(isInitiator, localId, remoteId = null) {
                 console.log('p2p established')
                 peer.send('Hello to other peer')
                 setPeer(peer)
-                resolve()
+                resolve(peer)
+            })
+            
+            peer.on('error', (err) => {
+                console.error('Something went wrong ', err)
+                reject(err)
             })
             
             peer.on('data', (data) => {
                 console.log(`Message from peer: ${data}`)
             })
+
         }
         
         

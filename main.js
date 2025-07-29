@@ -41,5 +41,15 @@ ipcMain.handle('socket-connect', async () => {
 })
 
 ipcMain.handle('peer-connect', async (event, isInitiator, localId, remoteId) => {
-    await setupPeer(isInitiator, localId, remoteId)
+    try {    
+        const peer = await setupPeer(isInitiator, localId, remoteId)
+        
+        const webContents = event.sender
+        webContents.send('p2p-connected', { remoteId })
+        
+        return { success: true }
+    } catch (err) {
+        console.error("Error in peer-connect: ", err)
+        return {success: false, error: err}
+    }
 })

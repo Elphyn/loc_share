@@ -42,3 +42,69 @@ window.electronAPI.onP2PConnected((_event, data) => {
     
     
 })
+
+
+const form = document.getElementById('file-form')
+const fileInput = document.getElementById('fileInput')
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault()
+    
+    const file = fileInput.files[0]
+    
+    window.electronAPI.sendFile(JSON.stringify({
+      type: 'file-meta',
+      filename: file.name,
+      filetype: file.type,
+      filesize: file.size,
+    }))
+     
+    let offset = 0
+    const chunkSize = 16 * 1024
+    
+    while (offset < file.size) {
+        const chunk = file.slice(offset, offset + chunkSize)
+        const buffer = await chunk.arrayBuffer()
+         
+        const uint8Array = new Uint8Array(buffer)
+        window.electronAPI.sendFile(Array.from(uint8Array))
+        offset += chunkSize
+    }
+    
+    window.electronAPI.sendFile(JSON.stringify({
+        type: 'file-done'
+    }))
+     
+})
+
+let incomingChunks = []
+
+let filename = ''
+let filetype = ''
+
+window.electronAPI.onFileMeta((_event, meta) => {
+    filename = meta.filename
+    filetype = meta.filetype
+})
+
+window.electronAPI.onFileChunk((_event, chunkArray) => {
+    console.log('Received a chunk of a file!')
+    const uint8Array = new Uint8Array(chunkArray)
+    incomingChunks.push(uint8Array)
+})
+
+const receivedFiles = document.getElementById('received-files')
+
+window.electronAPI.onFileDone((_event) => {
+    const blob = new Blob(incomingChunks, {type: filetype})
+    
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    
+    a.href = url
+    a.download = filename
+    a.click()
+    receivedFiles.append(a)
+    
+    incomingChunks = []
+})

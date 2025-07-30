@@ -3,7 +3,6 @@ const wrtc = require('wrtc')
 const { getSocket } = require('./socketStore')
 const { setPeer } = require('./peerStorage')
 
-
 let peer = null
 
 function setupPeer(isInitiator, localId, remoteId = null) {
@@ -21,7 +20,6 @@ function setupPeer(isInitiator, localId, remoteId = null) {
             
             peer.on('connect', () => {
                 console.log('p2p established')
-                peer.send('Hello to other peer')
                 setPeer(peer)
                 resolve(peer)
             })
@@ -30,11 +28,8 @@ function setupPeer(isInitiator, localId, remoteId = null) {
                 console.error('Something went wrong ', err)
                 reject(err)
             })
-            
-            peer.on('data', (data) => {
-                console.log(`Message from peer: ${data}`)
-            })
 
+            
         }
         
         

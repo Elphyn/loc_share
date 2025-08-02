@@ -10,10 +10,50 @@ const button_update = document.getElementById("update");
 const button_host = document.getElementById("start-server");
 const list = document.getElementById("connections");
 const button_listener = document.getElementById("allow-connection");
+const fileForm = document.getElementById("fileForm");
+const fileInput = document.getElementById("fileInput");
+const fileSubmit = document.getElementById("fileSubmit");
+const uploadedFiles = document.getElementById("uploaded-files");
 
 let socketManager = null;
 let peerManager = null;
 let localId = null;
+let fileMeta = null;
+let fileChunks = [];
+
+window.addEventListener("p2p-connected", () => {
+  peerManager.on("data", (data) => {
+    console.log("Received data, type: ", typeof data);
+    console.log(data);
+
+    try {
+      // for whatever reason wrtc sends even strings as uint8array, don't forget
+      const text = new TextDecoder().decode(data);
+      const parsedData = JSON.parse(text);
+
+      if (parsedData.type === "file-meta") {
+        console.log("file-meta");
+        fileMeta = parsedData;
+        fileChunks = [];
+      } else if (parsedData.type === "file-done") {
+        console.log("File-done");
+        const blob = new Blob(fileChunks, { type: fileMeta.filetype });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileMeta.filename;
+        a.textContent = `Download ${fileMeta.filename}, size: ${blob.size}`;
+
+        console.log("File collected: ", blob);
+        uploadedFiles.append(a);
+      }
+    } catch (error) {
+      fileChunks.push(data);
+    }
+  });
+  console.log("setting up data-handle");
+});
 
 export function getPeerManager() {
   if (peerManager) {
@@ -47,4 +87,37 @@ button_update.addEventListener("click", async () => {
 
 button_listener.addEventListener("click", async () => {
   await findServiceAndConnect();
+});
+
+fileForm.addEventListener("submit", async (e) => {
+  console.log("sending file");
+  e.preventDefault();
+
+  const file = fileInput.files[0];
+
+  const meta = JSON.stringify({
+    type: "file-meta",
+    filename: file.name,
+    filetype: file.type,
+  });
+
+  peerManager.sendData(meta);
+
+  let offset = 0;
+  const chunkSize = 16 * 1024;
+
+  while (offset < file.size) {
+    const chunk = file.slice(offset, offset + chunkSize);
+    const buffer = await chunk.arrayBuffer();
+
+    const uint8Array = new Uint8Array(buffer);
+    peerManager.sendData(uint8Array);
+    offset += chunkSize;
+  }
+
+  peerManager.sendData(
+    JSON.stringify({
+      type: "file-done",
+    }),
+  );
 });

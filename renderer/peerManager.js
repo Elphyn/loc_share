@@ -1,7 +1,10 @@
+import EventEmitter from "events";
 import SimplePeer from "simple-peer";
 
-export class PeerManager {
+export class PeerManager extends EventEmitter {
   constructor(socketManager) {
+    super();
+
     this.socket = socketManager.socket;
     this.peer = null;
     this.remoteId = null;
@@ -28,7 +31,7 @@ export class PeerManager {
   }
 
   _createPeer(isInitiator) {
-    this.peer = new SimplePeer({ initiator: isInitiator });
+    this.peer = new SimplePeer({ initiator: isInitiator, tricle: false });
 
     this.peer.on("signal", (data) => {
       if (!this.remoteId) {
@@ -43,10 +46,16 @@ export class PeerManager {
 
     this.peer.on("connect", () => {
       console.log("P2P connected!");
+      window.dispatchEvent(new Event("p2p-connected"));
     });
 
     this.peer.on("error", (err) => {
       console.log("Failed to connect p2p: ", err);
+    });
+
+    this.peer.on("data", (data) => {
+      console.log("Received data: ", data);
+      this.emit("data", data);
     });
   }
 
@@ -55,5 +64,8 @@ export class PeerManager {
     this.remoteId = remoteId;
     this._createPeer(true);
   }
-}
 
+  sendData(data) {
+    this.peer.send(data);
+  }
+}

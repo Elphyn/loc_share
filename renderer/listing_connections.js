@@ -17,7 +17,6 @@ export async function choosingSocketToConnect(list, localId) {
       console.log(`Connecting to peer: ${remoteId.id} from ${localId}`);
       try {
         getPeerManager().connect(remoteId.id);
-        console.log("p2p connected");
       } catch (err) {
         console.log("Something went wrong: ", err);
       }

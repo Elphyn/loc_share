@@ -12,14 +12,20 @@ const list = document.getElementById("connections");
 const button_listener = document.getElementById("allow-connection");
 const fileForm = document.getElementById("fileForm");
 const fileInput = document.getElementById("fileInput");
-const fileSubmit = document.getElementById("fileSubmit");
 const uploadedFiles = document.getElementById("uploaded-files");
 
 let socketManager = null;
 let peerManager = null;
-let localId = null;
 let fileMeta = null;
 let fileChunks = [];
+
+import { AppState } from "./appState.js";
+import { ConnectionStatusBar } from "./components/ConnectionStatus.js";
+export const appState = new AppState();
+
+document.body.append(
+  new ConnectionStatusBar(appState.state.connection, appState).render(),
+);
 
 window.addEventListener("p2p-connected", () => {
   peerManager.on("data", (data) => {
@@ -65,7 +71,7 @@ export function getPeerManager() {
 
 async function findServiceAndConnect() {
   socketManager = new SocketManager();
-  localId = await socketManager.discoverAndConnect();
+  appState.setLocalId(await socketManager.discoverAndConnect());
   peerManager = new PeerManager(socketManager);
 }
 
@@ -73,16 +79,16 @@ button_host.addEventListener("click", async () => {
   try {
     console.log("button pressed, server should be starting now");
     await window.electronAPI.startServer();
-
+    appState.setConnectionStatus("connected");
     await findServiceAndConnect();
-    console.log("localId: ", localId);
+    console.log("localId: ", appState.state.localId);
   } catch (err) {
     console.log("Something went wrong: ", err);
   }
 });
 
 button_update.addEventListener("click", async () => {
-  await choosingSocketToConnect(list, localId);
+  await choosingSocketToConnect(list, appState.state.localId);
 });
 
 button_listener.addEventListener("click", async () => {

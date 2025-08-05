@@ -3,6 +3,8 @@ export class AppState {
     this.state = {
       localId: null,
       connectionServer: "disconnected",
+
+      connectedSockets: [],
     };
     this.listeners = new Map();
   }
@@ -37,4 +39,9 @@ export class AppState {
   getServerStatus() {
     return this.connectionServer;
   }
+  // addSocket(socketId) {
+  //   console.log("New socket connected: ", socketId);
+  //   this.state.connectedSockets.push(socketId);
+  //   this.emit("socket-connected", socketId);
+  // }
 }

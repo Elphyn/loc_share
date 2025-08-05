@@ -6,8 +6,8 @@ const discoverService = require("./modules/discover");
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 380,
-    height: 680,
+    width: 500,
+    height: 900,
     resizable: true,
     maximizable: false,
     webPreferences: {
@@ -16,7 +16,6 @@ const createWindow = () => {
   });
 
   win.loadURL("http://localhost:5173/");
-
   // win.removeMenu();
 };
 

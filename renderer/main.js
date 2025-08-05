@@ -33,6 +33,10 @@ statusBar.mount(header);
 const discoveryButtons = new DiscoverDevices(appState);
 discoveryButtons.mount(serverSection);
 
+// ipcRenderer.on("socket-connected", (socketId) => {
+//   appState.addSocket(socketId);
+// });
+
 // window.addEventListener("p2p-connected", () => {
 //   peerManager.on("data", (data) => {
 //     console.log("Received data, type: ", typeof data);

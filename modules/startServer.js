@@ -1,47 +1,45 @@
-const bonjour = require('bonjour')()
-const startSignalingServer = require('./signaling_server')
-const port = 3000
+const bonjour = require("bonjour")();
+const startSignalingServer = require("./signaling_server");
+const port = 3000;
 
-let connections = new Set()
+let connections = new Set();
 
+async function startServer() {
+  const { httpServer, io } = await startSignalingServer(port);
 
-async function startServer() { 
-    const { httpServer, io } = await startSignalingServer(port)
+  bonjour.publish({ name: "signal-server", type: "http", port });
 
-    bonjour.publish({ name: 'signal-server', type: 'http', port })
-    
-    io.on('connection', (socket) => {
-        console.log('User has connected')
-        connections.add(socket)
+  io.on("connection", (socket) => {
+    console.log("User has connected");
+    connections.add(socket);
 
-        socket.on('signal', ({ to, signal }) => {
-            const target = io.sockets.sockets.get(to)
-            console.log('Server recieved signal, redirecting to: ', target.id)
+    socket.on("signal", ({ to, signal }) => {
+      const target = io.sockets.sockets.get(to);
+      console.log("Server recieved signal, redirecting to: ", target.id);
 
-            if (target) {
-                target.emit('signal', {from: socket.id, signal})
-            } else {
-                console.log(`There's no socket with an id:${to}`)
-            }
-        })
-        
+      if (target) {
+        target.emit("signal", { from: socket.id, signal });
+      } else {
+        console.log(`There's no socket with an id:${to}`);
+      }
+    });
+    socket.on("disconnect", () => {
+      console.log("User has disconnected");
+      connections.delete(socket);
+    });
+  });
 
-        socket.on('disconnect', () => {
-            console.log('User has disconnected')
-            connections.delete(socket)
-        })
-    })
-    
-    return {
-        httpServer,
-        io,
-        getConnections: () => connections,
-        stop: () => {
-            bonjour.unpublishAll()
-            bonjour.destroy()
-            httpServer.stop()
-        }
-    } 
+  return {
+    httpServer,
+    io,
+    getConnections: () => connections,
+    stop: () => {
+      bonjour.unpublishAll();
+      bonjour.destroy();
+      httpServer.stop();
+    },
+  };
 }
 
-module.exports = startServer
+module.exports = startServer;
+

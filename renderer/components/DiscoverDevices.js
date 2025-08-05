@@ -17,12 +17,8 @@ export class DiscoverDevices extends BaseComponent {
     });
   }
   addEventListeners() {
-    const startServerButton = this.element.querySelector(
-      ".start-server-button",
-    );
-    const listenForServerButton = this.element.querySelector(
-      ".find-server-button",
-    );
+    const startServerButton = this.element.querySelector(".server-btn");
+    const listenForServerButton = this.element.querySelector(".server-btn");
 
     async function findServiceAndConnect() {
       const localId = await socketManager.discoverAndConnect();
@@ -45,16 +41,22 @@ export class DiscoverDevices extends BaseComponent {
   }
 
   getTemplate() {
-    return `<div class ="connect-buttons-container">
-      <button class="start-server-button ${this.serverStatus}">Start Server</button>
-      <button class="find-server-button">Discover devices</button>
+    return `<div class ="server-controls">
+      <button id="start-server-button" class="server-btn ${this.serverStatus}">Start Server</button>
+      <button id="discover-server-button" class="server-btn">Discover devices</button>
     </div>`;
   }
 
   update() {
     const startServerButton = this.element.querySelector(
-      ".start-server-button",
+      "#start-server-button",
     );
-    startServerButton.className = `start-server-button ${this.serverStatus}`;
+    const discoverServerButton = this.element.querySelector(
+      "#discover-server-button",
+    );
+    if (this.serverStatus === "connected") {
+      startServerButton.disabled = true;
+      discoverServerButton.disabled = true;
+    }
   }
 }

@@ -30,3 +30,12 @@
   border-top-right-radius: 12px;
   color: #aaa;
 }
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

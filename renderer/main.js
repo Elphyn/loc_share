@@ -14,6 +14,8 @@ const fileForm = document.getElementById("fileForm");
 const fileInput = document.getElementById("fileInput");
 const uploadedFiles = document.getElementById("uploaded-files");
 
+const header = document.getElementById("header");
+
 let socketManager = null;
 let peerManager = null;
 let fileMeta = null;
@@ -23,8 +25,8 @@ import { AppState } from "./appState.js";
 import { ConnectionStatusBar } from "./components/ConnectionStatus.js";
 export const appState = new AppState();
 
-document.body.append(
-  new ConnectionStatusBar(appState.state.connection, appState).render(),
+header.append(
+  new ConnectionStatusBar(appState.state.connectionServer, appState).render(),
 );
 
 window.addEventListener("p2p-connected", () => {

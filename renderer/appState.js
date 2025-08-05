@@ -2,7 +2,7 @@ export class AppState {
   constructor() {
     this.state = {
       localId: null,
-      connection: "disconnected",
+      connectionServer: "disconnected",
     };
     this.listeners = new Map();
   }

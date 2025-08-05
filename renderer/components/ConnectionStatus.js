@@ -11,7 +11,10 @@ export class ConnectionStatusBar extends BaseComponent {
     });
   }
   getTemplate() {
-    return `<h1>${this.data}</h1>`;
+    return `<div class="${"header-bar"}">
+<div class="status-dot${this.data === "connected" ? "" : " dead"}"></div>
+<span>Server is ${this.data === "connected" ? "running" : "not runing"}</span>
+</div>`;
   }
   update(newData) {
     this.data = newData;

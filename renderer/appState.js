@@ -31,10 +31,10 @@ export class AppState {
     return this.state.localId;
   }
   setConnectionStatus(status) {
-    this.state.connection = status;
+    this.state.connectionServer = status;
     this.emit("server-connection", status);
   }
   getServerStatus() {
-    return this.connection;
+    return this.connectionServer;
   }
 }

@@ -1,8 +1,9 @@
 import EventEmitter from "events";
 import SimplePeer from "simple-peer";
+import { socketManager } from "./socketManager";
 
 export class PeerManager extends EventEmitter {
-  constructor(socketManager) {
+  constructor() {
     super();
 
     this.socket = socketManager.socket;
@@ -67,5 +68,13 @@ export class PeerManager extends EventEmitter {
 
   sendData(data) {
     this.peer.send(data);
+  }
+}
+
+export let peerManager = null;
+
+export function initPeerManager() {
+  if (!peerManager) {
+    peerManager = new PeerManager();
   }
 }

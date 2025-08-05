@@ -6,14 +6,18 @@ const discoverService = require("./modules/discover");
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 380,
+    height: 680,
+    resizable: true,
+    maximizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
   });
 
   win.loadURL("http://localhost:5173/");
+
+  // win.removeMenu();
 };
 
 app.whenReady().then(() => {

@@ -1,6 +1,5 @@
 export class BaseComponent {
-  constructor(data, appState) {
-    this.data = data;
+  constructor(appState) {
     this.appState = appState;
     this.element = this.createElement();
   }
@@ -15,7 +14,8 @@ export class BaseComponent {
   getTemplate() {
     throw new Error("You must create a component in component");
   }
-  render() {
-    return this.element;
+
+  mount(parent) {
+    parent.append(this.element);
   }
 }

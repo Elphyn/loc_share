@@ -27,7 +27,7 @@ export class AppState {
   }
   setLocalId(id) {
     this.state.localId = id;
-    this.emit("localId-assigned", id);
+    this.emit(".state.localId", id);
   }
   getLocalId() {
     return this.state.localId;
@@ -39,9 +39,10 @@ export class AppState {
   getServerStatus() {
     return this.connectionServer;
   }
-  // addSocket(socketId) {
-  //   console.log("New socket connected: ", socketId);
-  //   this.state.connectedSockets.push(socketId);
-  //   this.emit("socket-connected", socketId);
-  // }
+  addSocket(socketId) {
+    console.log("New socket connected: ", socketId);
+    this.state.connectedSockets.push(socketId);
+    console.log("connected sockets: ", this.state.connectedSockets);
+    this.emit("socket-connected", socketId);
+  }
 }

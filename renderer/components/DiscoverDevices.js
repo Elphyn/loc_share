@@ -17,14 +17,18 @@ export class DiscoverDevices extends BaseComponent {
     });
   }
   addEventListeners() {
-    const startServerButton = this.element.querySelector(".server-btn");
-    const listenForServerButton = this.element.querySelector(".server-btn");
+    const startServerButton = this.element.querySelector(
+      "#start-server-button",
+    );
+    const listenForServerButton = this.element.querySelector(
+      "#discover-server-button",
+    );
 
-    async function findServiceAndConnect() {
+    const findServiceAndConnect = async () => {
       const localId = await socketManager.discoverAndConnect();
       initPeerManager();
       this.appState.setLocalId(localId);
-    }
+    };
     startServerButton.addEventListener("click", async () => {
       try {
         console.log("Button pressed, server should start now");

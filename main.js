@@ -17,15 +17,17 @@ const createWindow = () => {
 
   win.loadURL("http://localhost:5173/");
   // win.removeMenu();
+  return win;
 };
 
+let mainWindow = null;
 app.whenReady().then(() => {
-  createWindow();
+  mainWindow = createWindow();
 });
 
 let serverInstance = null;
 ipcMain.handle("start-server", async () => {
-  serverInstance = await startServer();
+  serverInstance = await startServer(mainWindow);
   console.log("Server has started");
 });
 

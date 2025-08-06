@@ -1,10 +1,11 @@
 const bonjour = require("bonjour")();
 const startSignalingServer = require("./signaling_server");
+
 const port = 3000;
 
 let connections = new Set();
 
-async function startServer() {
+async function startServer(mainWindow) {
   const { httpServer, io } = await startSignalingServer(port);
 
   bonjour.publish({ name: "signal-server", type: "http", port });
@@ -12,7 +13,7 @@ async function startServer() {
   io.on("connection", (socket) => {
     console.log("User has connected");
     connections.add(socket);
-
+    mainWindow.webContents.send("socket-connected", socket.id);
     socket.on("signal", ({ to, signal }) => {
       const target = io.sockets.sockets.get(to);
       console.log("Server recieved signal, redirecting to: ", target.id);
@@ -42,4 +43,3 @@ async function startServer() {
 }
 
 module.exports = startServer;
-

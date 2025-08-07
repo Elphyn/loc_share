@@ -13,7 +13,15 @@ async function startServer(mainWindow) {
   io.on("connection", (socket) => {
     console.log("User has connected");
     connections.add(socket);
-    mainWindow.webContents.send("socket-connected", socket.id);
+    try {
+      mainWindow.webContents.send("socket-connected", socket.id);
+      console.log("Sent socket.id to the front");
+    } catch (err) {
+      console.error(
+        "Something went wrong in sending socketId to frontend",
+        err,
+      );
+    }
     socket.on("signal", ({ to, signal }) => {
       const target = io.sockets.sockets.get(to);
       console.log("Server recieved signal, redirecting to: ", target.id);

@@ -1,27 +1,11 @@
-import global from "global";
-import * as process from "process";
-global.process = process;
-
-// import { choosingSocketToConnect } from "./listing_connections.js";
-// import { SocketManager } from "./socketManager.js";
-// import { PeerManager } from "./peerManager.js";
-
-// const button_update = document.getElementById("update");
-// const button_host = document.getElementById("start-server");
-// const list = document.getElementById("connections");
-// const button_listener = document.getElementById("allow-connection");
-// const fileForm = document.getElementById("fileForm");
-// const fileInput = document.getElementById("fileInput");
-// const uploadedFiles = document.getElementById("uploaded-files");
-
-// let socketManager = null;
-// let peerManager = null;
-// let fileMeta = null;
-// let fileChunks = [];
-
 import { AppState } from "./appState.js";
 import { ConnectionStatusBar } from "./components/ConnectionStatus.js";
 import { DiscoverDevices } from "./components/DiscoverDevices.js";
+import global from "global";
+import * as process from "process";
+import { ConnectedSockets } from "./components/ListConnections.js";
+
+global.process = process;
 
 const header = document.getElementById("header");
 const serverSection = document.getElementById("server-section");
@@ -33,7 +17,13 @@ statusBar.mount(header);
 const discoveryButtons = new DiscoverDevices(appState);
 discoveryButtons.mount(serverSection);
 
-window.electronAPI.onSocketConnect((event, socketId) => {
+const connectionOptions = document.getElementById("connection-options");
+const connections = new ConnectedSockets(appState);
+connections.mount(connectionOptions);
+
+console.log("Right before setting up listener");
+window.electronAPI.onSocketConnected((socketId) => {
+  console.log("Recieved socketId from backend");
   appState.addSocket(socketId);
 });
 

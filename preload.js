@@ -9,4 +9,3 @@ contextBridge.exposeInMainWorld("electronAPI", {
       callback(socketId);
     }),
 });
-

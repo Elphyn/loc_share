@@ -43,6 +43,6 @@ export class AppState {
     console.log("New socket connected: ", socketId);
     this.state.connectedSockets.push(socketId);
     console.log("connected sockets: ", this.state.connectedSockets);
-    this.emit("socket-connected", socketId);
+    this.emit(".state.connectedSockets", socketId);
   }
 }

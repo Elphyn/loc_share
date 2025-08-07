@@ -18,4 +18,7 @@ export class BaseComponent {
   mount(parent) {
     parent.append(this.element);
   }
+  destroy() {
+    this.element.remove();
+  }
 }

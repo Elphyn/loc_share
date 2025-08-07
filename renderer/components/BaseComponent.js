@@ -5,7 +5,6 @@ export class BaseComponent {
   }
 
   createElement() {
-    // mini DOM
     const element = document.createElement("div");
     element.innerHTML = this.getTemplate();
     return element;

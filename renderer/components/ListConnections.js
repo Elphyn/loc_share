@@ -1,9 +1,8 @@
-import { appState } from "../main";
 import { BaseComponent } from "./BaseComponent";
 import { ConnectionItem } from "./Connection-item";
 
 export class ConnectedSockets extends BaseComponent {
-  constructor() {
+  constructor(appState) {
     super(appState);
 
     this.unsubscribe = this.handleChanges();
@@ -12,25 +11,18 @@ export class ConnectedSockets extends BaseComponent {
 
   handleChanges() {
     return this.appState.subscribe(".state.connectedSockets", (socketId) => {
-      update(socketId);
+      this.update(socketId);
     });
   }
 
   getTemplate() {
     // const connectedSockets = this.appState.connectedSockets || [];
-    return (container = `<div class="connections-container">
-    </div>`);
-
-    // connectedSockets.forEach((socketId) => {
-    //   const child = new ConnectionItem(appState, socketId);
-    //   this.items.set(socketId, child);
-    //   container.append(child);
-    // });
+    return `<div class="connections-container" id="container"></div>`;
   }
 
   update(socketId) {
-    const container = this.element.querySelector(".connections-container");
-    const child = new ConnectionItem(appState, socketId);
+    const container = this.element.querySelector("#container");
+    const child = new ConnectionItem(this.appState, socketId);
     container.append(child);
   }
 }

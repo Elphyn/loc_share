@@ -32,15 +32,15 @@ export class ConnectedSockets extends BaseComponent {
     console.log("updateConnections(adding): ", socketId);
     const container = this.element.querySelector("#container");
     const child = new ConnectionItem(this.appState, socketId);
-    this.items.set(child, child.element);
+    this.items.set(socketId, child);
     // container.append(child.element);
     child.mount(container);
   }
   updateDisconnections(socketId) {
+    console.log(this.items);
     console.log("updateConnections(removing): ", socketId);
     const container = this.element.querySelector("#container");
     const child = this.items.get(socketId);
-    this.items.delete(socketId);
-    container.remove(child);
+    child.destroy();
   }
 }

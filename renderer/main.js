@@ -4,7 +4,6 @@ import { DiscoverDevices } from "./components/DiscoverDevices.js";
 import global from "global";
 import * as process from "process";
 import { ConnectedSockets } from "./components/ListConnections.js";
-import { app } from "electron";
 
 global.process = process;
 

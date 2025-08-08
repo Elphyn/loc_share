@@ -32,7 +32,7 @@ export class PeerManager extends EventEmitter {
   }
 
   _createPeer(isInitiator) {
-    this.peer = new SimplePeer({ initiator: isInitiator, tricle: false });
+    this.peer = new SimplePeer({ initiator: isInitiator, trickle: false });
 
     this.peer.on("signal", (data) => {
       if (!this.remoteId) {

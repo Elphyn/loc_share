@@ -47,6 +47,6 @@ export class AppState {
   removeSocket(socketId) {
     console.log("Socket disconnected");
     this.state.connectedSockets.delete(socketId);
-    this.emit(".stae.connectedSockets.disconnected", socketId);
+    this.emit(".state.connectedSockets.disconnected", socketId);
   }
 }

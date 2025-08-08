@@ -35,7 +35,13 @@ async function startServer(mainWindow) {
     socket.on("disconnect", () => {
       console.log("User has disconnected");
       connections.delete(socket);
-      mainWindow.webContents.send("socket-connected", socket.id);
+      try {
+        console.log("sending diconnected socket to front");
+        mainWindow.webContents.send("socket-connected", socket.id);
+        console.log("successful");
+      } catch (err) {
+        console.log("Couldn't send info to front(disconnected)", err);
+      }
     });
   });
 

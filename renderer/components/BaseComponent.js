@@ -1,7 +1,7 @@
 export class BaseComponent {
   constructor(appState) {
     this.appState = appState;
-    this.element = this.createElement();
+    this.element = null;
   }
 
   createElement() {
@@ -15,6 +15,7 @@ export class BaseComponent {
   }
 
   mount(parent) {
+    this.element = this.createElement();
     parent.append(this.element);
   }
   destroy() {

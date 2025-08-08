@@ -41,7 +41,6 @@ export class AppState {
   }
   addSocket(socketId) {
     console.log("New socket connected: ", socketId);
-    // this.state.connectedSockets.push(socketId);
     this.state.connectedSockets.add(socketId);
     this.emit(".state.connectedSockets", socketId);
   }

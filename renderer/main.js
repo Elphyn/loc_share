@@ -4,6 +4,7 @@ import { DiscoverDevices } from "./components/DiscoverDevices.js";
 import global from "global";
 import * as process from "process";
 import { ConnectedSockets } from "./components/ListConnections.js";
+import { app } from "electron";
 
 global.process = process;
 
@@ -26,7 +27,10 @@ window.electronAPI.onSocketConnected((socketId) => {
   console.log("Recieved socketId from backend");
   appState.addSocket(socketId);
 });
-
+window.electronAPI.onSocketDisconnected((socketId) => {
+  console.log("Received disconnected socket from backend");
+  appState.removeSocket(socketId);
+});
 // window.addEventListener("p2p-connected", () => {
 //   peerManager.on("data", (data) => {
 //     console.log("Received data, type: ", typeof data);

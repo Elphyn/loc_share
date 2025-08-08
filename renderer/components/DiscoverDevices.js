@@ -7,7 +7,7 @@ export class DiscoverDevices extends BaseComponent {
     super(appState);
     this.serverStatus = this.appState.state.serverStatus;
     this.unsubscribe = this.handleChange();
-    this.addEventListeners();
+    this.element = null;
   }
 
   handleChange() {
@@ -62,5 +62,10 @@ export class DiscoverDevices extends BaseComponent {
       startServerButton.disabled = true;
       discoverServerButton.disabled = true;
     }
+  }
+  mount(parent) {
+    this.element = this.createElement();
+    this.addEventListeners();
+    parent.append(this.element);
   }
 }

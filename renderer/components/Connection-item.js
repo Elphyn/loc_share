@@ -2,8 +2,8 @@ import { BaseComponent } from "./BaseComponent";
 
 export class ConnectionItem extends BaseComponent {
   constructor(appState, id) {
-    this.id = id;
     super(appState);
+    this.id = id;
   }
 
   getTemplate() {

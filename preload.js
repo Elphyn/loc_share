@@ -8,4 +8,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
     ipcRenderer.on("socket-connected", (event, socketId) => {
       callback(socketId);
     }),
+  onSocketDisconnected: (callback) =>
+    ipcRenderer.on("socket-disconnected", (event, socketId) => {
+      callback(socketId);
+    }),
 });

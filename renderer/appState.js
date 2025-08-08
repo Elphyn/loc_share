@@ -4,7 +4,7 @@ export class AppState {
       localId: null,
       connectionServer: "disconnected",
 
-      connectedSockets: [],
+      connectedSockets: new Set(),
     };
     this.listeners = new Map();
   }
@@ -41,8 +41,13 @@ export class AppState {
   }
   addSocket(socketId) {
     console.log("New socket connected: ", socketId);
-    this.state.connectedSockets.push(socketId);
-    console.log("connected sockets: ", this.state.connectedSockets);
+    // this.state.connectedSockets.push(socketId);
+    this.state.connectedSockets.add(socketId);
     this.emit(".state.connectedSockets", socketId);
+  }
+  removeSocket(socketId) {
+    console.log("Socket disconnected");
+    this.state.connectedSockets.delete(socketId);
+    this.emit(".stae.connectedSockets.disconnected", socketId);
   }
 }

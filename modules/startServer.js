@@ -35,6 +35,7 @@ async function startServer(mainWindow) {
     socket.on("disconnect", () => {
       console.log("User has disconnected");
       connections.delete(socket);
+      mainWindow.webContents.send("socket-connected", socket.id);
     });
   });
 

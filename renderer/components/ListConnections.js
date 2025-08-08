@@ -5,24 +5,40 @@ export class ConnectedSockets extends BaseComponent {
   constructor(appState) {
     super(appState);
 
-    this.unsubscribe = this.handleChanges();
+    this.connectUnsubscribe = this.handleChangesConnection();
+    this.disconnectUnsubscribe = this.handleChangesDisconnection();
     this.items = new Map();
   }
 
-  handleChanges() {
+  handleChangesConnection() {
     return this.appState.subscribe(".state.connectedSockets", (socketId) => {
-      this.update(socketId);
+      this.updateConnections(socketId);
     });
+  }
+  handleChangesDisconnection() {
+    return this.appState.subscribe(
+      ".state.connectedSockets.disconnected",
+      (socketId) => {
+        this.updateDisconnections(socketId);
+      },
+    );
   }
 
   getTemplate() {
-    // const connectedSockets = this.appState.connectedSockets || [];
     return `<div class="connections-container" id="container"></div>`;
   }
 
-  update(socketId) {
+  updateConnections(socketId) {
+    console.log("updateConnections: ", socketId);
     const container = this.element.querySelector("#container");
     const child = new ConnectionItem(this.appState, socketId);
-    container.append(child);
+    this.items.set(child, child.element);
+    container.append(child.element);
+  }
+  updateDisconnections(socketId) {
+    const container = this.element.querySelector("#container");
+    const child = this.items.get(socketId);
+    this.items.delete(socketId);
+    container.remove(child);
   }
 }

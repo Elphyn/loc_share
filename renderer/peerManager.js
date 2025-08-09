@@ -1,6 +1,7 @@
 import EventEmitter from "events";
 import SimplePeer from "simple-peer";
 import { socketManager } from "./socketManager";
+import { appState } from "./main";
 
 export class PeerManager extends EventEmitter {
   constructor() {
@@ -47,7 +48,7 @@ export class PeerManager extends EventEmitter {
 
     this.peer.on("connect", () => {
       console.log("P2P connected!");
-      window.dispatchEvent(new Event("p2p-connected"));
+      appState.setPeerStatus("connected");
     });
 
     this.peer.on("error", (err) => {

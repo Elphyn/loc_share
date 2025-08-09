@@ -30,6 +30,15 @@ window.electronAPI.onSocketDisconnected((socketId) => {
   console.log("Received disconnected socket from backend");
   appState.removeSocket(socketId);
 });
+
+const unsubscribePeerStatus = appState.subscribe(
+  ".state.peerStatus",
+  (status) => {
+    if (status === "connected") {
+      console.log("p2p connected");
+    }
+  },
+);
 // window.addEventListener("p2p-connected", () => {
 //   peerManager.on("data", (data) => {
 //     console.log("Received data, type: ", typeof data);

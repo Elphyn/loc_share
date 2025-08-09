@@ -8,7 +8,7 @@ const createWindow = () => {
   const win = new BrowserWindow({
     width: 500,
     height: 900,
-    resizable: false,
+    resizable: true,
     maximizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -16,7 +16,7 @@ const createWindow = () => {
   });
 
   win.loadURL("http://localhost:5173/");
-  win.removeMenu();
+  // win.removeMenu();
   return win;
 };
 

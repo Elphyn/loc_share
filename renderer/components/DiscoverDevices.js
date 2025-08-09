@@ -25,8 +25,10 @@ export class DiscoverDevices extends BaseComponent {
     );
 
     const findServiceAndConnect = async () => {
+      console.log("connecting to somewhere...");
       const localId = await socketManager.discoverAndConnect();
       initPeerManager();
+      console.log("setting localId after connect to: ", localId);
       this.appState.setLocalId(localId);
     };
     startServerButton.addEventListener("click", async () => {

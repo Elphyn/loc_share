@@ -3,7 +3,7 @@ export class AppState {
     this.state = {
       localId: null,
       connectionServer: "disconnected",
-
+      peerStatus: "disconnected",
       connectedSockets: new Set(),
     };
     this.listeners = new Map();
@@ -48,5 +48,10 @@ export class AppState {
     console.log("Socket disconnected");
     this.state.connectedSockets.delete(socketId);
     this.emit(".state.connectedSockets.disconnected", socketId);
+  }
+  setPeerStatus(status) {
+    console.log("Peer is ", status);
+    this.state.peerStatus = status;
+    this.emit(".state.peerStatus.connected");
   }
 }

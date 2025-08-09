@@ -29,17 +29,26 @@ export class ConnectedSockets extends BaseComponent {
   }
 
   updateConnections(socketId) {
-    console.log("updateConnections(adding): ", socketId);
+    if (!this.appState.state.localId) {
+      const intervalId = setInterval(() => {
+        if (this.appState.state.localId) {
+          clearInterval(intervalId);
+          this.addItem(socketId);
+        }
+      }, 50);
+    } else {
+      this.addItem(socketId);
+    }
+  }
+
+  addItem(socketId) {
     const container = this.element.querySelector("#container");
     const child = new ConnectionItem(this.appState, socketId);
     this.items.set(socketId, child);
-    // container.append(child.element);
     child.mount(container);
   }
+
   updateDisconnections(socketId) {
-    console.log(this.items);
-    console.log("updateConnections(removing): ", socketId);
-    const container = this.element.querySelector("#container");
     const child = this.items.get(socketId);
     child.destroy();
   }

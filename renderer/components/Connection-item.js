@@ -32,10 +32,10 @@ export class ConnectionItem extends BaseComponent {
     const remoteId = this.id;
     connectToButton.addEventListener("click", async () => {
       console.log(
-        `Connecting to peer: ${remoteId.id} from ${this.appState.state.localId}`,
+        `Connecting to peer: ${remoteId} from ${this.appState.state.localId}`,
       );
       try {
-        peerManager.connect(remoteId.id);
+        peerManager.connect(remoteId);
         console.log("Connected");
       } catch (err) {
         console.log("Something went wrong: ", err);

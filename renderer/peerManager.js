@@ -16,6 +16,7 @@ export class PeerManager extends EventEmitter {
 
   _setupSocketListeners() {
     this.socket.on("signal", ({ from, signal }) => {
+      console.log("Received signal, from :", signal);
       if (!this.remoteId) {
         this.remoteId = from;
       }

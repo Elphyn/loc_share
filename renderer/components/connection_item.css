@@ -1,0 +1,114 @@
+.connection-item {
+  background: linear-gradient(135deg, #262626 0%, #1a1a1a 100%);
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: gentleSpawn 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+@keyframes gentleSpawn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.connection-item:hover {
+  border-color: #4ade80;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1f1f1f 100%);
+  transform: translateX(4px);
+}
+
+.connection-item.connected-peer {
+  border-color: #4ade80;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.1);
+}
+
+.connection-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.device-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.connection-item.connected-peer .device-icon {
+  background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(74, 222, 128, 0.6);
+  }
+}
+
+.device-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.device-id {
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  font-family: monospace;
+}
+
+.device-status {
+  font-size: 11px;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.connection-item.connected-peer .device-status {
+  color: #4ade80;
+}
+.connect-device-btn {
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.connect-device-btn.local {
+  background: linear-gradient(135deg, #333 0%, #262626 100%);
+  color: #aaa;
+  cursor: default;
+}
+
+.connect-device-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+}
+
+.disconnect-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #fff;
+}

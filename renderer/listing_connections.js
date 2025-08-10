@@ -1,6 +1,10 @@
 // I don't really need to pass in localID, remove later
 import { getPeerManager } from "./main.js";
 
+// export class ConnectionList() {
+//
+// }
+
 export async function choosingSocketToConnect(list, localId) {
   const arr = await window.electronAPI.getConnections();
   list.innerHTML = "";

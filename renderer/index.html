@@ -2,21 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./components/header.css" />
+    <link rel="stylesheet" href="./components/server_controls.css" />
+    <link rel="stylesheet" href="./components/connection_item.css" />
+    <link rel="stylesheet" href="./components/dropZone.css" />
+    <link rel="stylesheet" href="./components/file_section.css" />
   </head>
   <body>
-    <button id="start-server">Start server</button>
-    <button id="update">Get Connections</button>
-    <button id="allow-connection">Allow Connections</button>
-    <ul id="connections"></ul>
-    <h1 id="state"></h1>
-    <form id="fileForm">
-      <input type="file" id="fileInput" />
-      <button type="submit">Submit</button>
-    </form>
-    <ul id="uploaded-files"></ul>
+    <div class="header" id="header"></div>
+    <div class="main-content">
+      <div class="server-section" id="server-section"></div>
+      <div id="connection-options"></div>
+    </div>
     <script src="./main.js" type="module"></script>
   </body>
 </html>

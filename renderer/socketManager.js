@@ -25,3 +25,5 @@ export class SocketManager {
     });
   }
 }
+
+export const socketManager = new SocketManager();

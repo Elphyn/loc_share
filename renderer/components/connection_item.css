@@ -97,6 +97,12 @@
   transition: all 0.3s ease;
 }
 
+.connect-device-btn.local {
+  background: linear-gradient(135deg, #333 0%, #262626 100%);
+  color: #aaa;
+  cursor: default;
+}
+
 .connect-device-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);

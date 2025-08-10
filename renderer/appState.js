@@ -52,6 +52,6 @@ export class AppState {
   setPeerStatus(status) {
     console.log("Peer is ", status);
     this.state.peerStatus = status;
-    this.emit(".state.peerStatus.connected");
+    this.emit(".state.peerStatus", status);
   }
 }

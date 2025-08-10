@@ -1,27 +1,72 @@
 {
-  "name": "loc-share",
-  "version": "0.0.0",
-  "private": true,
+  "name": "p2p-file-share",
+  "version": "1.0.0",
+  "description": "P2P File Sharing Application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "cd renderer && npm run build",
+    "electron-pack": "electron-builder",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux"
   },
-  "dependencies": {
-    "bonjour": "^3.5.0",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "electron-webrtc": "^0.3.0",
-    "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
-    "morgan": "~1.9.1",
-    "multer": "^2.0.2",
-    "node-pre-gyp": "^0.17.0",
-    "readline": "^1.3.0",
-    "simple-peer": "^9.11.1",
-    "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1"
+  "build": {
+    "appId": "com.yourname.p2p-file-share",
+    "productName": "P2P File Share",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "modules/**/*",
+      "renderer/dist/**/*",
+      "!renderer/src",
+      "!renderer/node_modules"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "devDependencies": {
-    "electron": "^37.2.4"
+    "electron": "^latest",
+    "electron-builder": "^latest"
   }
 }

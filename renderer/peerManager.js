@@ -71,6 +71,14 @@ export class PeerManager extends EventEmitter {
   sendData(data) {
     this.peer.send(data);
   }
+  disconnect() {
+    if (this.peer) {
+      this.peer.destroy();
+      this.peer = null;
+      this.remoteId = null;
+      this.appState.setPeerStatus("disconnected");
+    }
+  }
 }
 
 export let peerManager = null;

@@ -16,7 +16,7 @@ const createWindow = () => {
   });
 
   win.loadURL("http://localhost:5173/");
-  // win.removeMenu();
+  win.removeMenu();
   return win;
 };
 

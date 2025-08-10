@@ -4,6 +4,8 @@ import { DiscoverDevices } from "./components/DiscoverDevices.js";
 import global from "global";
 import * as process from "process";
 import { ConnectedSockets } from "./components/ListConnections.js";
+import { DropZone } from "./components/DropZone.js";
+import { FileReceiver } from "./components/FileReceiver.js";
 
 global.process = process;
 
@@ -20,6 +22,16 @@ discoveryButtons.mount(serverSection);
 const connectionOptions = document.getElementById("connection-options");
 const connections = new ConnectedSockets(appState);
 connections.mount(connectionOptions);
+
+const fileSection = document.createElement("div");
+fileSection.className = "file-section";
+document.querySelector(".main-content").appendChild(fileSection);
+
+const dropZone = new DropZone(appState);
+dropZone.mount(fileSection);
+
+const fileReceiver = new FileReceiver(appState);
+fileReceiver.mount(fileSection);
 
 console.log("Right before setting up listener");
 window.electronAPI.onSocketConnected((socketId) => {

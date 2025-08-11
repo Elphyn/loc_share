@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import nodePolyfills from "rollup-plugin-node-polyfills";
 
 export default defineConfig({
+  base: "./",
   resolve: {
     alias: {
       "readable-stream": "vite-compatible-readable-stream",

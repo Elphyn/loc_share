@@ -40,9 +40,11 @@ export class AppState {
     return this.connectionServer;
   }
   addSocket(socketId) {
-    console.log("New socket connected: ", socketId);
-    this.state.connectedSockets.add(socketId);
-    this.emit(".state.connectedSockets", socketId);
+    if (!this.state.connectedSockets.has(socketId)) {
+      console.log("New socket connected: ", socketId);
+      this.state.connectedSockets.add(socketId);
+      this.emit(".state.connectedSockets", socketId);
+    }
   }
   removeSocket(socketId) {
     console.log("Socket disconnected");

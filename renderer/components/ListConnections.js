@@ -12,7 +12,11 @@ export class ConnectedSockets extends BaseComponent {
 
   handleChangesConnection() {
     return this.appState.subscribe(".state.connectedSockets", (socketId) => {
-      this.updateConnections(socketId);
+      try {
+        this.updateConnections(socketId);
+      } catch (err) {
+        console.error("An error trying to add socket", err);
+      }
     });
   }
   handleChangesDisconnection() {

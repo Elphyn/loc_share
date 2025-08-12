@@ -33,15 +33,15 @@ dropZone.mount(fileSection);
 const fileReceiver = new FileReceiver(appState);
 fileReceiver.mount(fileSection);
 
-console.log("Right before setting up listener");
-window.electronAPI.onSocketConnected((socketId) => {
-  console.log("Recieved socketId from backend");
-  appState.addSocket(socketId);
-});
-window.electronAPI.onSocketDisconnected((socketId) => {
-  console.log("Received disconnected socket from backend");
-  appState.removeSocket(socketId);
-});
+// console.log("Right before setting up listener");
+// window.electronAPI.onSocketConnected((socketId) => {
+//   console.log("Recieved socketId from backend");
+//   appState.addSocket(socketId);
+// });
+// window.electronAPI.onSocketDisconnected((socketId) => {
+//   console.log("Received disconnected socket from backend");
+//   appState.removeSocket(socketId);
+// });
 
 const unsubscribePeerStatus = appState.subscribe(
   ".state.peerStatus",

@@ -12,16 +12,7 @@ async function startServer(mainWindow) {
 
   io.on("connection", (socket) => {
     console.log("User has connected");
-    connections.add(socket);
-    try {
-      mainWindow.webContents.send("socket-connected", socket.id);
-      console.log("Sent socket.id to the front");
-    } catch (err) {
-      console.error(
-        "Something went wrong in sending socketId to frontend",
-        err,
-      );
-    }
+
     socket.on("signal", ({ to, signal }) => {
       const target = io.sockets.sockets.get(to);
       console.log("Server recieved signal, redirecting to: ", target.id);
@@ -35,14 +26,15 @@ async function startServer(mainWindow) {
     socket.on("disconnect", () => {
       console.log("User has disconnected");
       connections.delete(socket);
-      try {
-        console.log("sending diconnected socket to front");
-        mainWindow.webContents.send("socket-disconnected", socket.id);
-        console.log("successful");
-      } catch (err) {
-        console.log("Couldn't send info to front(disconnected)", err);
-      }
+
+      socket.emit("socket:disconnected", socket.id);
     });
+
+    connections.forEach((connection) => {
+      socket.emit("socket:connected", connection.id);
+    });
+    connections.add(socket);
+    io.emit("socket:connected", socket.id);
   });
 
   return {

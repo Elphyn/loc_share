@@ -58,7 +58,6 @@ export class ConnectionItem extends BaseComponent {
     button.addEventListener("click", () => {
       try {
         if (this.appState.state.peerStatus === "connected") {
-          // Handle disconnect (you might want to add this to PeerManager)
           console.log("Disconnect clicked");
         } else {
           console.log(`Connecting to peer: ${this.id}`);

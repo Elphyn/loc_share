@@ -46,6 +46,7 @@ export class ConnectedSockets extends BaseComponent {
   }
 
   addItem(socketId) {
+    console.log("Adding socket");
     const container = this.element.querySelector("#container");
     const child = new ConnectionItem(this.appState, socketId);
     this.items.set(socketId, child);

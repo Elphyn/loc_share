@@ -40,6 +40,7 @@ export class AppState {
     return this.connectionServer;
   }
   addSocket(socketId) {
+    console.log("adding socket");
     if (!this.state.connectedSockets.has(socketId)) {
       console.log("New socket connected: ", socketId);
       this.state.connectedSockets.add(socketId);

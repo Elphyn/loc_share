@@ -5,7 +5,7 @@ import { BaseComponent } from "./BaseComponent";
 export class DiscoverDevices extends BaseComponent {
   constructor(appState) {
     super(appState);
-    this.serverStatus = this.appState.state.serverStatus;
+    this.serverStatus = this.appState.state.connectionServer;
     this.unsubscribe = this.handleChange();
     this.element = null;
   }
@@ -24,6 +24,25 @@ export class DiscoverDevices extends BaseComponent {
       "#discover-server-button",
     );
 
+    const handleClick = async () => {
+      if (this.serverStatus === "disconnected") {
+        await window.electronAPI.startServer();
+        await findServiceAndConnect();
+        this.appState.setConnectionStatus("connected");
+      } else {
+        // add listener for disconnecting
+        console.log("Stopping server");
+        await window.electronAPI.stopServer();
+        console.log("Server stopped");
+        this.appState.setConnectionStatus("disconnected");
+        this.appState.setLocalId(null);
+        socketManager.socket = null;
+      }
+    };
+
+    // startServerButton.removeEventListener("click", handleClick);
+    // listenForServerButton.removeEventListener("click");
+
     const findServiceAndConnect = async () => {
       if (!this.appState.state.localId) {
         console.log("connecting to somewhere...");
@@ -33,16 +52,9 @@ export class DiscoverDevices extends BaseComponent {
         this.appState.setLocalId(localId);
       }
     };
-    startServerButton.addEventListener("click", async () => {
-      try {
-        console.log("Button pressed, server should start now");
-        await window.electronAPI.startServer();
-        this.appState.setConnectionStatus("connected");
-        await findServiceAndConnect();
-      } catch (err) {
-        console.error("Something went wrong in connecting to server: ", err);
-      }
-    });
+
+    startServerButton.addEventListener("click", handleClick);
+
     listenForServerButton.addEventListener("click", async () => {
       await findServiceAndConnect();
     });
@@ -62,10 +74,20 @@ export class DiscoverDevices extends BaseComponent {
     const discoverServerButton = this.element.querySelector(
       "#discover-server-button",
     );
+
     if (this.serverStatus === "connected") {
-      startServerButton.disabled = true;
-      discoverServerButton.disabled = true;
+      startServerButton.textContent = "Stop Server";
+      // now we need to reattach eventListener for click
+      // this.addEventListeners();
+    } else {
+      startServerButton.textContent = "Start Server";
+      // this.addEventListeners();
     }
+
+    // if (this.serverStatus === "connected") {
+    //   startServerButton.disabled = true;
+    //   discoverServerButton.disabled = true;
+    // }
   }
   mount(parent) {
     this.element = this.createElement();

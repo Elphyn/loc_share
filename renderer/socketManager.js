@@ -7,11 +7,16 @@ export class SocketManager {
   }
 
   async discoverAndConnect() {
-    const service = await window.electronAPI.getDiscoveredServices();
+    let service = null;
+    try {
+      console.log("Looking for server...");
+      service = await window.electronAPI.getDiscoveredServices();
+      console.log("Found a server: ", service);
+    } catch (err) {
+      console.error("Failed to find a server, err: ", err);
+    }
 
     return new Promise((resolve, reject) => {
-      console.log("Service: ", service);
-
       this.socket = io(`http://${service.addresses[0]}:${service.port}`);
 
       this.socket.on("connect", () => {

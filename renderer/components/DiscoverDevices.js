@@ -26,17 +26,26 @@ export class DiscoverDevices extends BaseComponent {
 
     const handleClick = async () => {
       if (this.serverStatus === "disconnected") {
-        await window.electronAPI.startServer();
-        await findServiceAndConnect();
-        this.appState.setConnectionStatus("connected");
+        try {
+          console.log("Starting a server");
+          await window.electronAPI.startServer();
+          console.log("Server started");
+          await findServiceAndConnect();
+          this.appState.setConnectionStatus("connected");
+        } catch (err) {
+          console.log("Failed to start the server");
+        }
       } else {
-        // add listener for disconnecting
-        console.log("Stopping server");
-        await window.electronAPI.stopServer();
-        console.log("Server stopped");
-        this.appState.setConnectionStatus("disconnected");
-        this.appState.setLocalId(null);
-        socketManager.socket = null;
+        try {
+          console.log("Stopping server");
+          await window.electronAPI.stopServer();
+          console.log("Server stopped");
+          this.appState.setConnectionStatus("disconnected");
+          this.appState.setLocalId(null);
+          socketManager.socket = null;
+        } catch (err) {
+          console.log("Failed to stop the server");
+        }
       }
     };
 

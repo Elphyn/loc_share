@@ -2,6 +2,7 @@ const { app, BrowserWindow, ipcMain } = require("electron");
 const path = require("node:path");
 const startServer = require("./modules/startServer");
 const discoverService = require("./modules/discover");
+const { stopServer } = require("./modules/signaling_server");
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -48,8 +49,13 @@ app.on("activate", () => {
 
 let serverInstance = null;
 ipcMain.handle("start-server", async () => {
-  serverInstance = await startServer(mainWindow);
-  console.log("Server has started");
+  try {
+    console.log("Starting the server");
+    serverInstance = await startServer();
+    console.log("Server is working");
+  } catch (err) {
+    console.log("Starting server failed: ", err);
+  }
 });
 
 ipcMain.handle("get-service", async () => {
@@ -64,4 +70,13 @@ ipcMain.handle("get-connections", () => {
   return sockets.map((socket) => ({
     id: socket.id,
   }));
+});
+
+ipcMain.handle("stop-server", async () => {
+  if (serverInstance) {
+    console.log("Stopping server right now");
+    await serverInstance.stop();
+    console.log("Server stopped");
+    serverInstance = null;
+  }
 });

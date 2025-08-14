@@ -12,4 +12,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
     ipcRenderer.on("socket-disconnected", (event, socketId) => {
       callback(socketId);
     }),
+  stopServer: () => ipcRenderer.invoke("stop-server"),
 });

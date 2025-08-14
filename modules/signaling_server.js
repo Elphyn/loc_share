@@ -19,4 +19,4 @@ function startSignalingServer(port) {
   });
 }
 
-module.exports = startSignalingServer;
+module.exports = { startSignalingServer };
